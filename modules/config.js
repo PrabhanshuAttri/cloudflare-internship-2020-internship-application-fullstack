@@ -9,7 +9,7 @@ class Config {
         abTestCookie: 'experimental',
       },
       apiEndpoints: {
-        favicon: 'https://dash.cloudflare.com/favicon.ico',
+        favicon: 'https://www.prabhanshu.com/img/favicons/favicon-96x96.png',
         variantList: 'https://cfw-takehome.developers.workers.dev/api/variants',
         variants: [],
       },
