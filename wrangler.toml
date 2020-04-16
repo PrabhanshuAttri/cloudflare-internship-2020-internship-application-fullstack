@@ -1,0 +1,6 @@
+name = "octopipers"
+type = "webpack"
+account_id = "b9b77dbb4f59612a0d7a15e639a916b1"
+workers_dev = true
+route = ""
+zone_id = ""
