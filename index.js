@@ -1,9 +1,9 @@
-import Router from './router';
-import Octapiper from './octapiper';
-import Config from './config';
+import Config from './modules/config';
+import Router from './modules/router';
+import Octapiper from './modules/octapiper';
 
 const config = new Config();
-const octapiper = new Octapiper();
+const octapiper = new Octapiper(config);
 
 addEventListener('fetch', event => {
   event.respondWith(handleRequest(event.request, event))

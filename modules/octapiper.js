@@ -1,33 +1,31 @@
 import Cookies from './cookies';
 import ABTest from './ab-test';
-import Config from './config';
-
-const config = new Config();
 
 class Octapiper {
-  constructor() {
+  constructor(config) {
+    this.config = config;
     this.abTest = null;
   }
 
   async updateVariantList() {
-    const apiUrl = config.getVariantListEndpoint();
+    const apiUrl = this.config.getVariantListEndpoint();
     const response = await fetch(apiUrl);
     const responseJson = await response.json();
     if (responseJson && responseJson.variants) {
-      config.setVariantEnpoints(responseJson.variants)
+      this.config.setVariantEnpoints(responseJson.variants)
       this.abTest = new ABTest(responseJson.variants.length)
     }
   }
 
   getVariantFromCookie(headers) {
     const cookies = new Cookies(headers)
-    return cookies.get(config.getAbTestCookieKey());
+    return cookies.get(this.config.getAbTestCookieKey());
   }
 
   selectVariant(headers) {
     const cookieVariant = this.getVariantFromCookie(headers)
     let index = cookieVariant || this.abTest.getVariant();
-    return [index, config.getVariantEndpoint(index)];
+    return [index, this.config.getVariantEndpoint(index)];
   }
 
   async serveVariant(request) {
@@ -47,7 +45,7 @@ class Octapiper {
       )
       response.headers.append(
         'Set-Cookie',
-        `${config.getAbTestCookieKey()}=${variant}; path=/`
+        `${this.config.getAbTestCookieKey()}=${variant}; path=/`
       )
       return response;
     } catch(err) {
