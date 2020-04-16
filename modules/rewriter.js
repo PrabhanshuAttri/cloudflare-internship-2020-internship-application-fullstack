@@ -19,7 +19,7 @@ const Rewriter = (response) => {
         null,
         {
           searchText: /(?<=This is variant)(.*)(?=of the take home project!)/g,
-          replaceWith: 'Octapiper'
+          replaceWith: 'Not all those who wander are lost. - J.R.R. Tolkein'
         }
       )
     )
