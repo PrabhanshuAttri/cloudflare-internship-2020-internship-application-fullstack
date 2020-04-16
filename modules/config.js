@@ -51,6 +51,10 @@ class Config {
       : null;
   }
 
+  getVariantCount() {
+    return this.config.apiEndpoints.variants.length;
+  }
+
   /**
    * Get AB Testing key for cookies
    */

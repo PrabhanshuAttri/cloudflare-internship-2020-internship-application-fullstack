@@ -17,16 +17,54 @@ class Octapiper {
     this.abTest = null;
   }
 
+  async getErrorResponse(errorCode, content = null) {
+    let body = '';
+    if (!content) {
+      switch (errorCode) {
+        case 500:
+          body = 'Internal Server Error';
+          break;
+        case 503:
+          body = 'Service Unavailable';
+          break;
+        case 404:
+        default:
+          body = 'Not found';
+          break;
+      }
+    } else {
+      body = content;
+    }
+    const resp = new Response(
+      body,
+      {
+        status: errorCode,
+        headers: { 'Content-Type': 'text/html' },
+      },
+    );
+    return resp;
+  }
+
   /**
    * Updates variant list in config
    */
   async updateVariantList() {
     const apiUrl = this.config.getVariantListEndpoint();
-    const response = await fetch(apiUrl);
-    const responseJson = await response.json();
-    if (responseJson && responseJson.variants) {
-      this.config.setVariantEnpoints(responseJson.variants);
-      this.abTest = new ABTest(responseJson.variants.length);
+    try {
+      const response = await fetch(apiUrl);
+      if (response.status !== 200) {
+        throw 'Status not 200';
+      }
+      const responseJson = await response.json();
+
+      if (responseJson && responseJson.variants) {
+        this.config.setVariantEnpoints(responseJson.variants);
+        this.abTest = new ABTest(responseJson.variants.length);
+      } else {
+        throw 'Variants not found';
+      }
+    } catch (err) {
+
     }
   }
 
@@ -55,8 +93,15 @@ class Octapiper {
    */
   async serveVariant(request) {
     try {
+      if (this.config.getVariantCount() < 1) {
+        throw 'No variant available';
+      }
       const [variant, variantUrl] = this.selectVariant(request.headers);
       const variantResponse = await fetch(variantUrl);
+
+      if (variantResponse.status !== 200) {
+        throw 'Variant page not accessible';
+      }
       const response = Rewriter(variantResponse);
       response.headers.append(
         'Set-Cookie',
@@ -64,7 +109,7 @@ class Octapiper {
       );
       return response;
     } catch (err) {
-      return new Response('Internal Server Error', { status: 500, headers: { 'Content-Type': 'text/html' } });
+      return this.getErrorResponse(404, 'This page is not available');
     }
   }
 
