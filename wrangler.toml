@@ -1,6 +1,8 @@
-name = "octopipers"
+name = "octapipers"
 type = "webpack"
 account_id = "b9b77dbb4f59612a0d7a15e639a916b1"
 workers_dev = true
-route = ""
-zone_id = ""
+
+[env.production]
+route = "octa.prabhanshu.com"
+zone_id = "3cf1a6af5f5905b200d7699d57e83901"

@@ -5,13 +5,13 @@ const Rewriter = (response) => {
     .on('title',
       new CustomRewriter(
         null,
-        { searchText: /(variant \d+(\.\d)*)/i, replaceWith: 'Octapiper' }
+        { searchText: /(variant \d+(\.\d)*)/i, replaceWith: 'Octapipers' }
       )
     )
     .on('h1#title',
       new CustomRewriter(
         null,
-        { searchText: /(variant \d+(\.\d)*)/i, replaceWith: 'Octapiper' }
+        { searchText: /(variant \d+(\.\d)*)/i, replaceWith: 'Octapipers' }
       )
     )
     .on('p#description',
@@ -38,7 +38,10 @@ const Rewriter = (response) => {
     .on('a#url',
       new CustomRewriter(
         null,
-        { searchText: 'Return to cloudflare.com', replaceWith: 'Visit my home on web' }
+        {
+          searchText: 'Return to cloudflare.com',
+          replaceWith: 'Visit my home on web'
+        }
       )
     )
 
