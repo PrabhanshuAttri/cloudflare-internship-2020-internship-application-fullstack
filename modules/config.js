@@ -51,6 +51,9 @@ class Config {
       : null;
   }
 
+  /**
+   * Get count of variants available
+   */
   getVariantCount() {
     return this.config.apiEndpoints.variants.length;
   }

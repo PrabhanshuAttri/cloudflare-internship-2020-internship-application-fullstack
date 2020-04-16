@@ -4,19 +4,23 @@ class ABTest {
    * Create an ABTest.
    * @param {number} n - The number of variants.
    */
-  constructor(n) {
-    // ToDo: implement non uniform weights for variants
-    this.spec = this.generateSpecs(n);
+  constructor(n, weights = []) {
+    this.spec = this.generateSpecs(n, weights);
   }
 
   /**
    * Generate variants and their weights
    * @param {number} n - The number of variants
    */
-  generateSpecs(n) {
+  generateSpecs(n, weights = []) {
     const spec = {};
     for (let i = 0; i < n; i += 1) {
-      spec[i] = 1 / parseFloat(n);
+      if(weights && i < weights.length) {
+        spec[i] = weights[i]
+      } else {
+        // each variant has equal weightage
+        spec[i] = 1 / parseFloat(n);
+      }
     }
     return spec;
   }

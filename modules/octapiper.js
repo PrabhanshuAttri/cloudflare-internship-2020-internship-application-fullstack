@@ -64,7 +64,6 @@ class Octapiper {
         throw 'Variants not found';
       }
     } catch (err) {
-
     }
   }
 
