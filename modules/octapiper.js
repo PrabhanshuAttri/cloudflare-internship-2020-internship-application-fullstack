@@ -1,5 +1,7 @@
 import Cookies from './cookies';
 import ABTest from './ab-test';
+import Rewriter from './rewriter';
+
 
 class Octapiper {
   constructor(config) {
@@ -32,6 +34,13 @@ class Octapiper {
     try {
       const [variant, variantUrl] = this.selectVariant(request.headers)
       const variantResponse = await fetch(variantUrl)
+      const response = Rewriter(variantResponse)
+      response.headers.append(
+        'Set-Cookie',
+        `${this.config.getAbTestCookieKey()}=${variant}; path=/`
+      )
+      return response;
+      /*
       const content = await variantResponse.text()
 
       const response = new Response(
@@ -43,11 +52,7 @@ class Octapiper {
           status: variantResponse.status
         }
       )
-      response.headers.append(
-        'Set-Cookie',
-        `${this.config.getAbTestCookieKey()}=${variant}; path=/`
-      )
-      return response;
+      */
     } catch(err) {
       console.log('eee', err)
       return new Response('Internal Server Error', { status: 500, headers: { 'Content-Type': 'text/html'}})
