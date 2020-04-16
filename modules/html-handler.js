@@ -1,4 +1,12 @@
-class CustomRewriter {
+/** Class for HTTPHandler */
+class HTMLHandler {
+  /**
+   * Creates a custom element handler
+   * @param {string} attributeName - name of the attribute to change
+   * @param {Object{}} text - object with update information
+   * @param {string} text.searchText - text to be replaced
+   * @param {string} text.replaceWith - text to be replaced with
+   */
   constructor(attributeName = null, text = null) {
     this.attributeName = attributeName;
     if (text) {
@@ -11,6 +19,9 @@ class CustomRewriter {
     }
   }
 
+  /**
+   * Element updater method
+   */
   element(element) {
     if (this.attributeName) {
       const attribute = element.getAttribute(this.attributeName);
@@ -28,6 +39,9 @@ class CustomRewriter {
     }
   }
 
+  /**
+   * text updater method
+   */
   text(text) {
     if (this.searchText && this.replaceWith) {
       if (text.text.match(this.searchText)) text.replace(this.replaceWith);
@@ -35,4 +49,4 @@ class CustomRewriter {
   }
 }
 
-export default CustomRewriter;
+export default HTMLHandler;

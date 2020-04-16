@@ -1,19 +1,22 @@
-import CustomRewriter from './custom-rewriter';
+import HTMLHandler from './html-handler';
 
+/**
+ * Custom HTMLRewriter method
+ */
 const Rewriter = (response) => {
   const rewriter = new HTMLRewriter()
     .on('title',
-      new CustomRewriter(
+      new HTMLHandler(
         null,
         { searchText: /(variant \d+(\.\d)*)/i, replaceWith: 'Octapipers' },
       ))
     .on('h1#title',
-      new CustomRewriter(
+      new HTMLHandler(
         null,
         { searchText: /(variant \d+(\.\d)*)/i, replaceWith: 'Octapipers' },
       ))
     .on('p#description',
-      new CustomRewriter(
+      new HTMLHandler(
         null,
         {
           searchText: /(?<=This is variant)(.*)(?=of the take home project!)/g,
@@ -21,17 +24,17 @@ const Rewriter = (response) => {
         },
       ))
     .on('a#url',
-      new CustomRewriter(
+      new HTMLHandler(
         'href',
         { searchText: 'cloudflare.com', replaceWith: 'prabhanshu.com' },
       ))
     .on('a#url',
-      new CustomRewriter(
+      new HTMLHandler(
         'target',
         { searchText: '', replaceWith: '_blank' },
       ))
     .on('a#url',
-      new CustomRewriter(
+      new HTMLHandler(
         null,
         {
           searchText: 'Return to cloudflare.com',
