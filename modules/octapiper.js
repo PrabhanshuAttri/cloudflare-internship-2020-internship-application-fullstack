@@ -1,3 +1,5 @@
+import fetch from 'node-fetch';
+
 import Cookies from './cookies';
 import ABTest from './ab-test';
 import Rewriter from './rewriter';

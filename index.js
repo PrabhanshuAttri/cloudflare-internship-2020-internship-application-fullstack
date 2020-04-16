@@ -1,3 +1,5 @@
+import fetch from 'node-fetch';
+
 import Config from './modules/config';
 import Router from './modules/router';
 import Octapiper from './modules/octapiper';
