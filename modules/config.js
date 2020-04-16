@@ -2,14 +2,14 @@ class Config {
   constructor() {
     this.config = {
       keys: {
-        abTestCookie: 'experimental'
+        abTestCookie: 'experimental',
       },
       apiEndpoints: {
         favicon: 'https://dash.cloudflare.com/favicon.ico',
         variantList: 'https://cfw-takehome.developers.workers.dev/api/variants',
-        variants: []
-      }
-    }
+        variants: [],
+      },
+    };
   }
 
   setVariantEnpoints(variants) {
@@ -25,7 +25,7 @@ class Config {
   }
 
   getVariantEndpoint(index) {
-    let i = index < this.config.apiEndpoints.variants.length
+    const i = index < this.config.apiEndpoints.variants.length
       ? index : 0;
 
     return this.config.apiEndpoints.variants.length > 0

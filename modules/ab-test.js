@@ -5,19 +5,22 @@ class ABTest {
 
   generateSpecs(n) {
     const spec = {};
-    for(let i = 0; i < n; i++) {
-      spec[i] = 1/parseFloat(n);
+    for (let i = 0; i < n; i += 1) {
+      spec[i] = 1 / parseFloat(n);
     }
-    return spec
+    return spec;
   }
 
   getWeightedRandom() {
     const rand = Math.random();
     let sum = 0;
-    for(let [key, value] of Object.entries(this.spec)) {
+    let lastKey = null;
+    for (const [key, value] of Object.entries(this.spec)) {
       sum += value;
+      lastKey = key;
       if (rand <= sum) return key;
     }
+    return lastKey;
   }
 
   getVariant() {

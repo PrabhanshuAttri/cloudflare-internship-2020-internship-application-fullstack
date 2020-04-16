@@ -14,54 +14,41 @@ class Octapiper {
     const response = await fetch(apiUrl);
     const responseJson = await response.json();
     if (responseJson && responseJson.variants) {
-      this.config.setVariantEnpoints(responseJson.variants)
-      this.abTest = new ABTest(responseJson.variants.length)
+      this.config.setVariantEnpoints(responseJson.variants);
+      this.abTest = new ABTest(responseJson.variants.length);
     }
   }
 
   getVariantFromCookie(headers) {
-    const cookies = new Cookies(headers)
+    const cookies = new Cookies(headers);
     return cookies.get(this.config.getAbTestCookieKey());
   }
 
   selectVariant(headers) {
-    const cookieVariant = this.getVariantFromCookie(headers)
-    let index = cookieVariant || this.abTest.getVariant();
+    const cookieVariant = this.getVariantFromCookie(headers);
+    const index = cookieVariant || this.abTest.getVariant();
     return [index, this.config.getVariantEndpoint(index)];
   }
 
   async serveVariant(request) {
     try {
-      const [variant, variantUrl] = this.selectVariant(request.headers)
-      const variantResponse = await fetch(variantUrl)
-      const response = Rewriter(variantResponse)
+      const [variant, variantUrl] = this.selectVariant(request.headers);
+      const variantResponse = await fetch(variantUrl);
+      const response = Rewriter(variantResponse);
       response.headers.append(
         'Set-Cookie',
-        `${this.config.getAbTestCookieKey()}=${variant}; path=/`
-      )
+        `${this.config.getAbTestCookieKey()}=${variant}; path=/`,
+      );
       return response;
-      /*
-      const content = await variantResponse.text()
-
-      const response = new Response(
-        content,
-        {
-          headers: {
-            'Content-Type': variantResponse.headers.get('content-type')
-          },
-          status: variantResponse.status
-        }
-      )
-      */
-    } catch(err) {
-      console.log('eee', err)
-      return new Response('Internal Server Error', { status: 500, headers: { 'Content-Type': 'text/html'}})
+    } catch (err) {
+      return new Response('Internal Server Error', { status: 500, headers: { 'Content-Type': 'text/html' } });
     }
   }
 
   async handleRequest(request) {
     await this.updateVariantList();
-    return await this.serveVariant(request);
+    const resp = await this.serveVariant(request);
+    return resp;
   }
 }
 
